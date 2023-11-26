@@ -4,13 +4,14 @@
 #ORM provides a bridge b/w relational database tables, relationships & fields and Python objects
 
 from app import *
-from app import app
 from model import *
 from flask import request, jsonify
+from flask_jwt_extended import get_jwt_identity, jwt_required
 import os
 
 
 @app.route("/category_api/<int:id>", methods=["GET", "PUT", "DELETE"])
+@jwt_required()
 def category_api(id):
     if request.method=="GET":
         category = Category.query.filter_by(id=id).first()
@@ -36,6 +37,7 @@ def category_api(id):
         return {"Message": "Category deleted successfully..."}, 200
     
 @app.route("/category_api", methods=["GET", "POST"])
+@jwt_required()
 def category_api_1():
     if request.method=="GET":
         categories = Category.query.all()
@@ -57,6 +59,7 @@ def category_api_1():
         
 
 @app.route("/product_api/<int:id>", methods=["GET", "PUT", "DELETE"])
+@jwt_required()
 def product_api(id):
     if request.method=="GET":
         product = Product.query.filter_by(id=id).first()
@@ -95,6 +98,7 @@ def product_api(id):
         return {"Message": "Product deleted successfully..."}, 200
     
 @app.route("/product_api", methods=["GET", "POST"])
+@jwt_required()
 def product_api_1():
     if request.method=="GET":
         products = Product.query.all()

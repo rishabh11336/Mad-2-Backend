@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session
 from flask_sqlalchemy import SQLAlchemy
+
 import os
 
 
@@ -21,7 +22,7 @@ app.app_context().push()
 #secret key generated & then assigned  to app.secret_key  
 app.secret_key=os.urandom(24)   
 
-
+from auth import *
 from API import *
 
 
