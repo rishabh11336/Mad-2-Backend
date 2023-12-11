@@ -1,14 +1,17 @@
-from flask import Flask, render_template, session
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 import os
 
+from flask_cors import CORS
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = 'static/'
 
 
 app=Flask(__name__)
+CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(current_dir, "database.sqlite3")
 #used for file upload
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
@@ -29,7 +32,8 @@ from API import *
 #script run as main module
 if __name__== "__main__":
     #host & port no. on which flask application started in debug mode    
-    #app.run(host='0.0.0.0', port=8080, debug=True)   
+    #app.run(host='0.0.0.0', port=8080, debug=True)
+    #db.create_all()   
     app.run(host='0.0.0.0', port=8080)    
  
 

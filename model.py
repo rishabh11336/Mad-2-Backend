@@ -1,6 +1,25 @@
 from app import db
 from datetime import datetime
 
+class Role(db.Model):
+    __tablename__="role"
+
+    id = db.Column('id', db.Integer, primary_key = True)
+    user_id = db.Column(db.String(50))
+    role_name = db.Column(db.String(50))
+    status = db.Column(db.String(50))
+
+    def __init__(self, user_id, role_name, status):
+        self.user_id = user_id
+        self.role_name = role_name
+        self.status = status
+
+
+class TokenBlacklist(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(500), unique=True, nullable=False)
+
+
 class User(db.Model):
     __tablename__="user"
 
@@ -10,24 +29,17 @@ class User(db.Model):
     contact_no = db.Column(db.Integer)
     sex = db.Column(db.String(6))
     email = db.Column(db.String(100))
-    password = db.Column(db.String(50))  
-    
-class Admin(db.Model):
-    __tablename__="admin"
+    password = db.Column(db.String(50))   
+    role = db.Column(db.String(10))
 
-    id = db.Column('id', db.Integer, primary_key = True)
-    name = db.Column(db.String(50))
-    contact_no = db.Column(db.Integer)
-    sex = db.Column(db.String(6))
-    email = db.Column(db.String(100))
-    password = db.Column(db.String(50))  
-    
+
 class Category(db.Model):
     __tablename__="category"
 
     id = db.Column('id', db.Integer, primary_key = True)
     name = db.Column(db.String(50))
     image = db.Column(db.String(50))
+
 
 class Product(db.Model):
     __tablename__="product"
@@ -43,6 +55,7 @@ class Product(db.Model):
     price_per_unit = db.Column(db.Float(15))
     image = db.Column(db.String)
 
+
 class Cart(db.Model):
     __tablename__="cart"
 
@@ -51,6 +64,7 @@ class Cart(db.Model):
     product_id = db.Column(db.Integer)
     product_qty = db.Column(db.Integer)
 
+
 class Order(db.Model):
     __tablename__="order"
 
@@ -58,6 +72,7 @@ class Order(db.Model):
     user_id = db.Column(db.Integer)
     order_total = db.Column(db.Integer)
     order_time = db.Column(db.DateTime, nullable=False, default = datetime.utcnow)
+
 
 class Order_details(db.Model):
     __tablename__="order_details"
@@ -68,4 +83,3 @@ class Order_details(db.Model):
     product_id = db.Column(db.Integer)
     product_qty = db.Column(db.Integer)
     price = db.Column(db.Integer)
-

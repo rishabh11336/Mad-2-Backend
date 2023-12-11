@@ -11,7 +11,7 @@ import os
 
 
 @app.route("/category_api/<int:id>", methods=["GET", "PUT", "DELETE"])
-@jwt_required()
+#@jwt_required()
 def category_api(id):
     if request.method=="GET":
         category = Category.query.filter_by(id=id).first()
@@ -37,13 +37,13 @@ def category_api(id):
         return {"Message": "Category deleted successfully..."}, 200
     
 @app.route("/category_api", methods=["GET", "POST"])
-@jwt_required()
+#@jwt_required()
 def category_api_1():
     if request.method=="GET":
         categories = Category.query.all()
         result = dict()
         for category in categories:
-            result[category.id] = {"name": category.name, "image": "127.0.0.1:8080"+category.image}
+            result[category.id] = {"name": category.name, "image": "http://127.0.0.1:8080"+category.image, "id": category.id}
         return jsonify(result)
     
     elif request.method=="POST":
@@ -56,10 +56,18 @@ def category_api_1():
         db.session.commit()
         return {"Message": "Category created successfully!"}, 200
     
-        
+@app.route("/CategoryProduct_api/<int:id>", methods=["GET"])
+#@jwt_required()
+def category_api_2(id):
+    if request.method=="GET":
+        products = Product.query.filter_by(category=id)
+        result = dict()
+        for product in products:
+            result[product.id] = {"name": product.name, "brand": product.brand, "category_id": product.category, "mfg_date": product.mfg_date, "exp_date": product.exp_date, "unit": product.unit, "quantity": product.qty, "price": product.price_per_unit, "image": "http://127.0.0.1:8080"+product.image}
+        return jsonify(result)
 
 @app.route("/product_api/<int:id>", methods=["GET", "PUT", "DELETE"])
-@jwt_required()
+#@jwt_required()
 def product_api(id):
     if request.method=="GET":
         product = Product.query.filter_by(id=id).first()
@@ -98,13 +106,13 @@ def product_api(id):
         return {"Message": "Product deleted successfully..."}, 200
     
 @app.route("/product_api", methods=["GET", "POST"])
-@jwt_required()
+#@jwt_required()
 def product_api_1():
     if request.method=="GET":
         products = Product.query.all()
         result = dict()
         for product in products:
-            result[product.id] = {"name": product.name, "brand": product.brand, "category_id": product.category, "mfg_date": product.mfg_date, "exp_date": product.exp_date, "unit": product.unit, "quantity": product.qty, "price": product.price_per_unit, "image": "127.0.0.1:8080"+product.image}
+            result[product.id] = {"name": product.name, "brand": product.brand, "category_id": product.category, "mfg_date": product.mfg_date, "exp_date": product.exp_date, "unit": product.unit, "quantity": product.qty, "price": product.price_per_unit, "image": "http://127.0.0.1:8080"+product.image}
         return jsonify(result)
     
     elif request.method=="POST":
@@ -125,4 +133,11 @@ def product_api_1():
         db.session.flush()
         db.session.commit()
         return {"Message": "Product created successfully!"}, 200
-    
+
+
+@app.route("/cart_api/<int:id>", methods=["GET"])
+def cart_api(id):
+    if request.method=="GET":
+        cart = Cart.query.filter_by(id=id, user_id=20).first()
+        result = {"product_id": cart.product_id, "quantity": cart.quantity}
+        return jsonify(result)
