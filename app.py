@@ -26,7 +26,8 @@ app.app_context().push()
 app.secret_key=os.urandom(24)   
 
 from auth import *
-from API import *
+from Api import *
+
 
 
 #script run as main module
